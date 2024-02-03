@@ -3,9 +3,9 @@ import subprocess
 import os
 
 intermediateFileName = "./output.inter.md"
-masterFileName = "src/report.md"
+masterFileName = "/book/report.md"
 outputFileName = "./output.pdf"
-templateFileName = "./src/template/template.latex"
+templateFileName = "/book/template/template.latex"
 
 masterFile = open(masterFileName, mode = 'r', encoding = 'utf-8-sig')
 lines = masterFile.readlines()
@@ -15,7 +15,7 @@ content = ""
 
 for line in lines:
     if '%' == line[0]:
-        srcFile = open("src/"+line[1:-1], 'r')
+        srcFile = open(line[1:-1], 'r')
         content = content + "\n\n" +srcFile.read()
         srcFile.close()
     else:
