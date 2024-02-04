@@ -6,6 +6,7 @@ intermediateFileName = "./output.inter.md"
 masterFileName = "/book/report.md"
 outputFileName = "./output.pdf"
 templateFileName = "/book/template/template.latex"
+generalOptions = "--wrap=preserve"
 
 masterFile = open(masterFileName, mode = 'r', encoding = 'utf-8-sig')
 lines = masterFile.readlines()
@@ -24,5 +25,5 @@ destination_file = open(intermediateFileName, 'w')
 destination_file.write(content)
 destination_file.close()
 
-subprocess.run(["pandoc", "--listings", "--template", templateFileName, intermediateFileName, "-o", outputFileName])
+subprocess.run(["pandoc", generalOptions, "--listings", "--template", templateFileName, intermediateFileName, "-o", outputFileName])
 os.remove(intermediateFileName)
