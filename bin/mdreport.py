@@ -2,6 +2,18 @@
 import subprocess
 import os
 
+
+def includeFile(filename, destination_file):
+    srcFile = open(filename, 'r')
+    lines = srcFile.readlines()
+    srcFile.close()
+    destination_file.write("\n\n")
+    for line in lines:
+        if '%' == line[0]:
+            includeFile(line[1:-1], destination_file)
+        else:
+            destination_file.write(line)
+
 intermediateFileName = "./output.inter.md"
 masterFileName = "/book/report.md"
 outputFileName = "./output.pdf"
@@ -12,17 +24,13 @@ masterFile = open(masterFileName, mode = 'r', encoding = 'utf-8-sig')
 lines = masterFile.readlines()
 masterFile.close()
 
-content = ""
+destination_file = open(intermediateFileName, 'w')
 
 for line in lines:
     if '%' == line[0]:
-        srcFile = open(line[1:-1], 'r')
-        content = content + "\n\n" +srcFile.read()
-        srcFile.close()
+        includeFile(line[1:-1], destination_file)
     else:
-        content = content + line
-destination_file = open(intermediateFileName, 'w')
-destination_file.write(content)
+        destination_file.write(line)
 destination_file.close()
 
 subprocess.run(["pandoc", generalOptions, "--listings", "--template", templateFileName, intermediateFileName, "-o", outputFileName])
